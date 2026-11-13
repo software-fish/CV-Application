@@ -1,8 +1,6 @@
-import React from "react";
-
-function Educational() {
+function Educational(props) {
     return (
-        <section>
+        <section id="educational-exp" onChange={props.educationalChange}>
             <label htmlFor="school">School Name: </label>
             <input type="text" id="school" name="school" />
             <label htmlFor="title">Title of study: </label>

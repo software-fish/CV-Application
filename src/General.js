@@ -1,8 +1,6 @@
-import React from 'react'
-
-function General() {
+function General(props) {
     return (
-        <section>
+        <section id="general-exp" onChange={props.generalChange}>
             <label htmlFor="name">Name: </label>
             <input type="text" id="name" name="name" required />
             <label htmlFor="email">Email: </label>
