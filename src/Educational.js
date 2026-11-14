@@ -1,6 +1,6 @@
 function Educational(props) {
     return (
-        <section id="educational-exp" onChange={props.educationalChange}>
+        <section style={{display: props.shouldDisplay ? "block" : "none"}} id="educational-exp" onChange={props.educationalChange}>
             <label htmlFor="school">School Name: </label>
             <input type="text" id="school" name="school" />
             <label htmlFor="title">Title of study: </label>

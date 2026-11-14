@@ -1,6 +1,6 @@
 function General(props) {
     return (
-        <section id="general-exp" onChange={props.generalChange}>
+        <section id="general-exp" style={{display: props.shouldDisplay ? "block" : "none"}} onChange={props.generalChange}>
             <label htmlFor="name">Name: </label>
             <input type="text" id="name" name="name" required />
             <label htmlFor="email">Email: </label>

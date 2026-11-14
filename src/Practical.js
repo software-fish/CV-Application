@@ -1,6 +1,6 @@
 function Practical(props) {
     return (
-        <section id="practical-exp" onChange={props.practicalChange} >
+        <section id="practical-exp" style={{display: props.shouldDisplay ? "block" : "none"}} onChange={props.practicalChange} >
             <label htmlFor="company">Company: </label>
             <input type="text" id='company' name='company' required />
             <label htmlFor="position">Position title: </label>
