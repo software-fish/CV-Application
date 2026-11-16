@@ -1,4 +1,4 @@
-import './style.css';
+//import './style.css';
 import { CVApp } from './CVApp';
 
 function App() {

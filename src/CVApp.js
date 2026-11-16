@@ -3,6 +3,7 @@ import { General } from "./General"
 import { Educational } from "./Educational"
 import { Practical } from "./Practical"
 import { AddInfo } from "./AddInfo"
+import { CV } from "./CV"
 
 function CVApp() {
     const [CVInfo, setCVInfo] = React.useState({
@@ -81,6 +82,22 @@ function CVApp() {
                     }
                 })
             }
+        } else if (target.id === "mainResponsibility") {
+            if (target.value.trim().length < 80) {
+                setMessages(prevMessages => {
+                    return {
+                        ...prevMessages,
+                        forMainResponsibility: "Must be minimum of 80 characters long"
+                    }
+                })
+            } else {
+                setMessages(prevMessages => {
+                    return {
+                        ...prevMessages,
+                        forMainResponsibility: ""
+                    }
+                })
+            }
         }
     }
 
@@ -89,13 +106,10 @@ function CVApp() {
         const messageKeys = Object.entries(messages)
         let howManyPassed = CVValues.length - 1
         let canFormPass = false
-        let currentState;
 
         for (let i = 0; i < CVValues.length; i++) {
             if (!CVValues[i].trim()) {
                 setMessages(prevMessages => {
-                    currentState = prevMessages
-
                     return {
                         ...prevMessages,
                         [`${messageKeys[i][0]}`]: "This field cannot be empty."
@@ -144,7 +158,29 @@ function CVApp() {
             canFormPass = true
         }
 
-        return howManyPassed === 23 && canFormPass
+        if (CVInfo.mainResponsibility.trim().length < 80) {
+            setMessages(prevMessages => {
+                return {
+                    ...prevMessages,
+                    forMainResponsibility: "Must be minimum of 80 characters long"
+                }
+            })
+
+            canFormPass = false
+        } else {
+            setMessages(prevMessages => {
+                return {
+                    ...prevMessages,
+                    forMainResponsibility: ""
+                }
+            })
+
+            canFormPass = true
+        }
+
+        console.log(howManyPassed)
+
+        return howManyPassed === 21 && canFormPass
     }
 
     const handleChange = ({ target }) => {
@@ -173,10 +209,10 @@ function CVApp() {
     }
 
     const handleSubmit = (event) => {
+        event.preventDefault()
+
         if (submitCheckVailidty()) {
             setDisplayCV(true)
-        } else {
-            event.preventDefault()
         }
     }
 
@@ -226,7 +262,11 @@ function CVApp() {
                                     endDate: messages.forEndDate
                                 }}
             />
-            <button id="submit" style={{display: addGeneral || addEducational || addPractical ? "block" : "none"}} onClick={handleSubmit}>Generate CV</button>
+            <button id="submit" style={{display: addGeneral && addEducational && addPractical ? "block" : "none"}} onClick={handleSubmit}>Generate CV</button>
+            <CV 
+                CVShouldDisplay={displayCV} 
+                formData={CVInfo} 
+            />
         </form>
     )
 }
