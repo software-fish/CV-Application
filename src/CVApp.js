@@ -34,14 +34,15 @@ function CVApp() {
         forStartDate: '',
         forEndDate: '',
     })
+    const [displayCV, setDisplayCV] = React.useState(false)
 
-    const inputCheckValidity = (target) => {
+    const inputCheckVailidity = (target) => {
         const firstLetter = target.id.charAt(0)
         const firstLetterCap = firstLetter.toUpperCase()
         const remainingLetters = target.id.slice(1)
         const capitalizedWord = firstLetterCap + remainingLetters
 
-        if (!CVInfo[target.id].trim()) {
+        if (!target.value.trim()) {
             setMessages(prevMessages => {
                 return {
                     ...prevMessages,
@@ -57,14 +58,19 @@ function CVApp() {
             })
         }
 
-        console.log(target.id === "email")
-
         if (target.id === "email") {
-            if (!CVInfo[target.id].includes("@")) {
+            if (!target.value.includes("@")) {
                 setMessages(prevMessages => {
                     return {
                         ...prevMessages,
                         forEmail: "Email adresses cannot omit @."
+                    }
+                })
+            } else if (target.value.trim()[0] === "@") {
+                setMessages(prevMessages => {
+                    return {
+                        ...prevMessages,
+                        forEmail: "Not valid email format."
                     }
                 })
             } else {
@@ -83,10 +89,13 @@ function CVApp() {
         const messageKeys = Object.entries(messages)
         let howManyPassed = CVValues.length - 1
         let canFormPass = false
+        let currentState;
 
         for (let i = 0; i < CVValues.length; i++) {
             if (!CVValues[i].trim()) {
                 setMessages(prevMessages => {
+                    currentState = prevMessages
+
                     return {
                         ...prevMessages,
                         [`${messageKeys[i][0]}`]: "This field cannot be empty."
@@ -115,6 +124,15 @@ function CVApp() {
             })
 
             canFormPass = false
+        } else if (CVInfo.email.trim()[0] === "@") {
+            setMessages(prevMessages => {
+                return {
+                    ...prevMessages,
+                    forEmail: "Not valid email format."
+                }
+            })
+            
+            canFormPass = false
         } else {
             setMessages(prevMessages => {
                 return {
@@ -126,11 +144,7 @@ function CVApp() {
             canFormPass = true
         }
 
-        console.log(howManyPassed === 23 && canFormPass)
-
-        if (howManyPassed === 23 && canFormPass) {
-
-        }
+        return howManyPassed === 23 && canFormPass
     }
 
     const handleChange = ({ target }) => {
@@ -139,7 +153,7 @@ function CVApp() {
             [`${target.id}`]: target.value
          })
 
-         inputCheckValidity(target)
+         inputCheckVailidity(target)
     }
 
     const handleClick = ({ target }) => {
@@ -159,9 +173,11 @@ function CVApp() {
     }
 
     const handleSubmit = (event) => {
-        event.preventDefault()
-
-        submitCheckVailidty()
+        if (submitCheckVailidty()) {
+            setDisplayCV(true)
+        } else {
+            event.preventDefault()
+        }
     }
 
     return (
