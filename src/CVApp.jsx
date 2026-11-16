@@ -178,8 +178,6 @@ function CVApp() {
             canFormPass = true
         }
 
-        console.log(howManyPassed)
-
         return howManyPassed === 21 && canFormPass
     }
 
